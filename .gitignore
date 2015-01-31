@@ -1,1 +1,3 @@
 build/.module-cache
+*._.DS_Store
+*.DS_Store
