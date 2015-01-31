@@ -1,0 +1,39 @@
+#!/bin/bash
+
+function monitor(){
+	fswatch -o $1 |
+	while read line; do
+		restart
+	done
+}
+
+function restart(){
+	if [ "$(pgrep $PROCESS_NAME)" ]; then
+		kill -9 $(pgrep $PROCESS_NAME)
+	fi
+	echo ">> Reloading..."
+	go_run
+}
+
+function close {
+  killall -q -w -9 fswatch
+  exit 0
+}
+
+function go_run(){
+	go run $FILE_PATH $ARGS &	
+}
+
+trap close INT
+echo "== Go-reload"
+echo ">> Watching file, CTRL+C to stop"
+
+FILE_PATH=$1
+FILE_NAME=$(basename $FILE_PATH)
+PROCESS_NAME=${FILE_NAME%%.*}
+
+
+go_run
+jsx --watch src/ build/
+
+monitor $1
