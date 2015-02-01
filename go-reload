@@ -34,6 +34,6 @@ PROCESS_NAME=${FILE_NAME%%.*}
 
 
 go_run
-jsx --watch src/ build/
+# jsx --watch src/ build/
 
 monitor $1

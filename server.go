@@ -1,20 +1,20 @@
 package main
 
 import (
-    "log"
+	"log"
 	"html/template"
 	"net/http"
-    "path"
-    "os"
-    // "os/exec"
-    // "fmt"
+	"path"
+	"os"
+	// "os/exec"
+	// "fmt"
 )
 
 func serveTemplate(w http.ResponseWriter, r *http.Request) {
-    lp := path.Join("templates", "layout.html")
-    fp := path.Join("templates", r.URL.Path)
+	lp := path.Join("templates", "layout.html")
+	fp := path.Join("templates", r.URL.Path)
 
-    // Return a 404 if the template doesn't exist
+	// Return a 404 if the template doesn't exist
 	info, err := os.Stat(fp)
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -29,7 +29,7 @@ func serveTemplate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-    tmpl, err := template.ParseFiles(lp, fp)
+	tmpl, err := template.ParseFiles(lp, fp)
 	if err != nil {
 		// Log the detailed error
 		log.Println(err.Error())
@@ -37,7 +37,7 @@ func serveTemplate(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
-    if err := tmpl.ExecuteTemplate(w, "layout", nil); err != nil {
+	if err := tmpl.ExecuteTemplate(w, "layout", nil); err != nil {
 		log.Println(err.Error())
 		http.Error(w, http.StatusText(500), 500)
 	}
@@ -45,26 +45,26 @@ func serveTemplate(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-    // handler for static files --> css, and libs
-    build := http.FileServer(http.Dir("build"))
-    http.Handle("/build/", http.StripPrefix("/build/", build))
+	// handler for static files --> css, and libs
+	build := http.FileServer(http.Dir("build"))
+	http.Handle("/build/", http.StripPrefix("/build/", build))
 
-    lib := http.FileServer(http.Dir("lib"))
-    http.Handle("/lib/", http.StripPrefix("/lib/", lib))
+	lib := http.FileServer(http.Dir("lib"))
+	http.Handle("/lib/", http.StripPrefix("/lib/", lib))
 
-    // main routing of files
-    http.HandleFunc("/", serveTemplate)
+	// main routing of files
+	http.HandleFunc("/", serveTemplate)
 
-    // converting all jsx into js files , commenting out this for now as this is shifted to go-reload
- //    cmd := exec.Command("jsx","src/","build/")
- //    out, err := cmd.Output()
- //    if err != nil {
+	// converting all jsx into js files , commenting out this for now as this is shifted to go-reload
+	//    cmd := exec.Command("jsx","src/","build/")
+	//    out, err := cmd.Output()
+	//    if err != nil {
 	// 	fmt.Println(err.Error())
 	// 	return
 	// }
 	// fmt.Println(string(out))
 
-    // starting server
-    log.Println("Listening... on 8080")
+	// starting server
+	log.Println("Listening... on 8080")
 	http.ListenAndServe(":8080", nil)
 }
