@@ -3,7 +3,7 @@ var Component = React.createClass({displayName: "Component",
   render : function(){
     return (
         React.createElement("p", null, 
-        "Rahul on is awesome ", this.props.foo
+        "React in action ", this.props.foo
         )
       )
   }

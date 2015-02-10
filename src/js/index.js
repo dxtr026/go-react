@@ -3,7 +3,7 @@ var Component = React.createClass({
   render : function(){
     return (
         <p>
-        Rahul on is awesome {this.props.foo}
+        React in action {this.props.foo}
         </p>
       )
   }

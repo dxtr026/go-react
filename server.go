@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"path"
 	"os"
+	// "gopkg.in/mgo.v2"
+	// "gopkg.in/mgo.v2/bson"
 	// "os/exec"
 	// "fmt"
 )
@@ -22,6 +24,7 @@ func serveTemplate(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+
 
 	// Return a 404 if the request is for a directory
 	if info.IsDir() {
